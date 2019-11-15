@@ -1,3 +1,5 @@
+from typing import Any
+from dataclasses import dataclass
 from multidict import CIMultiDictProxy
 
 
@@ -6,7 +8,11 @@ class HTTPResponse(Exception):
 	"""HTTP response"""
 
 	headers: CIMultiDictProxy
-	body: ReadableStream
+	body: Any
+
+	@property
+	def status(self) -> int:
+		raise NotImplementedError()
 
 	@property
 	def ok(self) -> bool:

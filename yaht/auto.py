@@ -7,6 +7,8 @@ class PipeableType(type):
 
 
 class Auto(metaclass = PipeableType):
+    _data: dict
+
     # TODO make _tb positional-only in 3.8
     def __init__(self, _tb: TypedBytes = None, **data):
         if _tb:

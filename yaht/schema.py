@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Any, Mapping, Sequence, Union
+from typing import Any, Mapping, Sequence, Union, Type, TYPE_CHECKING
 from warnings import warn
 
 from importlib import resources
@@ -146,8 +146,11 @@ class SchemaDocument:
         return Any
 
 
-def schema_to_type(top_level_schema: Schema, chosen_schema: Schema = None):
+def schema_to_type(top_level_schema: Schema, chosen_schema: Schema = None) -> type:
     return SchemaDocument(top_level_schema).to_type(chosen_schema or top_level_schema)
 
 
-Schema = schema_to_type(TypedBytes('application/yaml', resources.read_binary('yaht', 'schema.yaml')) | Auto)
+if TYPE_CHECKING:
+    Schema = Any
+else:
+    Schema = schema_to_type(TypedBytes('application/yaml', resources.read_binary('yaht', 'schema.yaml')) | Auto)
